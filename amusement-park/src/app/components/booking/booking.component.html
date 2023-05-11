@@ -1,0 +1,389 @@
+<div class="container">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <!-- <span class="pull-right">(<strong>5</strong>) items</span> -->
+                        <h2>Complete your booking</h2>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+                            <h3>Date of Visit:</h3>
+                            <input type="date" style="margin-top: 10px; border-radius: 5px; padding:5px;" />
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+                            <h3>Visitor Details</h3>
+                            <form [formGroup]="formVisitor">
+                                <div formArrayName="visitor">
+                                    <div *ngFor="let visitorGroup of visitor?.controls; let i = index"
+                                        [formGroupName]="i">
+                                        <table class="table shoping-cart-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="desc">
+
+                                                        <input type="text" formControlName="fName" name="fName"
+                                                            placeholder="First Name"
+                                                            style="margin: 10px; margin-left: 0px; border-radius: 5px; padding:5px;" />
+                                                        <input type="text" formControlName="lName" name="lName"
+                                                            placeholder="Last Name"
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;" />
+                                                        <input type="date" formControlName="dob" name="dob"
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;" />
+
+                                                        <label for="member">Member:</label>
+                                                        <select name="member" formControlName="member"
+                                                            (change)="onCompleteVisitor(i)"
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;">
+                                                            <option value="Y">Yes</option>
+                                                            <option value="N">No</option>
+                                                        </select>
+                                                    </td>
+                                                    <td><s class="text-muted"
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;">$
+                                                            {{ basePrice }}</s>
+                                                        <h4 name="price" id="price" formControlName="price"
+                                                            ngDefaultControl
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;">
+                                                            ${{ visitorPriceDB[i] }}
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary" (click)="addVisitor()">Add
+                                    Visitor</button>
+                                <button type="submit" (click)="removeVisitor()" style=" margin: 30px;"><img
+                                        src="../../../assets/images/icons/remove.png" style="height: 30px;" /></button>
+
+                            </form>
+                        </div>
+
+                    </div>
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+
+                            <form [formGroup]="formParking">
+                                <div formArrayName="parking">
+                                    <div *ngFor="let parkingGroup of parking?.controls; let i = index"
+                                        [formGroupName]="i">
+                                        <h3>Parking Details</h3>
+                                        <table class="table shoping-cart-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="desc">
+                                                        <label for="inTime">In Time:</label>
+                                                        <select name="inTime" formControlName="inTime"
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;"
+                                                            (change)="updateEndTime($any($event.target).value)">
+                                                            <option *ngFor="let time of timeArray" [value]="time.value">
+                                                                {{ time.text }}</option>
+                                                        </select>
+                                                        <label for="outTime">Out Time:</label>
+                                                        <select name="outTime" formControlName="outTime"
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;"
+                                                            (change)="updateParkingPrice($any($event.target).value, i)">
+                                                            <option *ngFor="let time of endTimeArray[i]"
+                                                                [value]="time.value">{{ time.text }}</option>
+
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <h4 formControlName="parkingPrice" name="parkingPrice"
+                                                            ngDefaultControl
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;">
+                                                            ${{ parkingPriceDB[i] }}
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary" (click)="addParking()">Add
+                                    Parking</button>
+                                <button type="submit" (click)="removeParking()" style=" margin: 30px;"><img
+                                        src="../../../assets/images/icons/remove.png" style="height: 30px;" /></button>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+                            <h3>Show Details</h3>
+                            <form [formGroup]="formShow">
+                                <div formArrayName="show">
+                                    <div *ngFor="let showGroup of show?.controls; let i = index" [formGroupName]="i">
+
+                                        <table class="table shoping-cart-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="desc">
+                                                        <label for="shows">Choose:</label>
+                                                        <select name="shows" formControlName="shows"
+                                                            (change)="onChangeShow($any($event.target).value, i)"
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;">
+                                                            <option *ngFor="let showDB of showsDB"
+                                                                [value]="showDB.show_name">
+                                                                {{ showDB.show_name }}
+                                                            </option>
+                                                        </select>
+                                                        <br>
+                                                        <label formControlName="startTime" name="startTime"
+                                                            ngDefaultControl
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;">
+                                                            Start Time: {{ show.value[i]['startTime'] }}
+                                                        </label>
+                                                        <label formControlName="endTime" name="endTime"
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;"
+                                                            ngDefaultControl>
+                                                            End Time: {{ show.value[i]['endTime'] }}
+                                                        </label>
+                                                        <label formControlName="wc" name="wc" ngDefaultControl
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;">
+                                                            WheelChair Accessible: {{ show.value[i]['wc'] }}
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <button class="minus-btn" type="button" name="button">
+                                                            <img src="../../../assets/images/icons/minus.svg"
+                                                                style="height: 15px; aspect-ratio: 1;" alt=""
+                                                                (click)='decreaseShow(i)' />
+                                                        </button>
+                                                        <label name="showQuantity" value="1"
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;"
+                                                            formControlName="showQuantity" min="1" ngDefaultControl>
+                                                            {{ show.value[i]['showQuantity'] }}
+                                                        </label>
+
+                                                        <button class="plus-btn" type="button" name="button">
+                                                            <img src="../../../assets/images/icons/plus.svg"
+                                                                style="height: 15px; aspect-ratio: 1;" alt=""
+                                                                (click)='increaseShow(i)' />
+                                                        </button>
+
+                                                    </td>
+                                                    <td>
+                                                        <h4 formControlName="showPrice" name="showPrice"
+                                                            ngDefaultControl
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;">
+                                                            ${{ show.value[i]['showPrice'] }}
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary" (click)="addShow()">Add
+                                    Show</button>
+                                <button type="submit" (click)="removeShow()" style=" margin: 30px;"><img
+                                        src="../../../assets/images/icons/remove.png" style="height: 30px;" /></button>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+                            <h3>Store Details</h3>
+                            <form [formGroup]="formStore">
+                                <div formArrayName="stores">
+                                    <div *ngFor="let storeGroup of stores?.controls; let i = index" [formGroupName]="i">
+
+                                        <table class="table shoping-cart-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="desc">
+                                                        <label for="store">Stores:</label>
+                                                        <select name="store" formControlName="store"
+                                                            (change)="onChangeStore($any($event.target).value)"
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;">
+                                                            <option *ngFor="let storeDB of storesDB"
+                                                                [value]="storeDB.store_id">
+                                                                {{ storeDB.store_name }}
+                                                            </option>
+                                                        </select>
+                                                        <br>
+                                                        <label for="item">Items:</label>
+                                                        <select name="item" formControlName="item"
+                                                            (change)="onChangeStoreItem($any($event.target).value, i)"
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;">
+                                                            <option *ngFor="let storeItemDB of storeItemsDB[i]"
+                                                                [value]="storeItemDB.menu_item_id">
+                                                                {{ storeItemDB.menu_item_name }}
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <button class="minus-btn" type="button" name="button">
+                                                            <img src="../../../assets/images/icons/minus.svg"
+                                                                style="height: 15px; aspect-ratio: 1;" alt=""
+                                                                (click)='decreaseStore(i)' />
+                                                        </button>
+                                                        <label name="storeQuantity" value="1"
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;"
+                                                            formControlName="storeQuantity" min="1" ngDefaultControl>
+                                                            {{ stores.value[i]['storeQuantity'] }}
+                                                        </label>
+
+                                                        <button class="plus-btn" type="button" name="button">
+                                                            <img src="../../../assets/images/icons/plus.svg"
+                                                                style="height: 15px; aspect-ratio: 1;" alt=""
+                                                                (click)='increaseStore(i)' />
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <h4 name="storePrice" formControlName="storePrice"
+                                                            ngDefaultControl
+                                                            style="margin: 10px; border-radius: 5px; padding:5px;">
+                                                            ${{ stores.value[i]['storePrice'] }}
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary" (click)="addStore()">Add
+                                    Store</button>
+                                <button type="submit" (click)="removeStore()" style=" margin: 30px;"><img
+                                        src="../../../assets/images/icons/remove.png" style="height: 30px;" /></button>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>Cart Summary</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table>
+                            <tr>
+                                <td width="150px">
+                                    <div class="text-left"> Subtotal</div>
+                                </td>
+                                <td>
+                                    <div class="text-right">${{ rawPrice }}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="60%">
+                                    <div class="text-left"> Discount</div>
+                                </td>
+                                <td>
+                                    <div class="text-right"> - ${{ totalDiscount }}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="60%">
+                                    <div class="text-left"> Total</div>
+                                </td>
+                                <td>
+                                    <div class="text-right">
+                                        <h2>${{ totalPrice }}</h2>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- <span>Subtotal</span>
+                        <h2 class="font-bold">
+                            ${{ totalPrice }}
+                        </h2> -->
+
+                        <hr>
+                        <div class="m-t-sm">
+                            <div class="btn-group">
+                                <a class="btn btn-primary btn-sm" (click)="activateForm()"><i
+                                        class="fa fa-shopping-cart"></i>
+                                    Checkout</a>
+                                <a class="btn btn-white btn-sm" (click)="deactivateForm()"> Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>Payment</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <form [formGroup]="formCard">
+                            <div class="form-group">
+                                <label for="cardType" style="margin: 10px; border-radius: 5px; padding:5px;">Card
+                                    Type</label><br>
+                                <input id="debit" type="radio" value="debit" name="cardType" formControlName="cardType">
+                                <label for="debit" style="margin: 10px; border-radius: 5px; padding:5px;">Debit</label>
+                                <input id="credit" type="radio" value="credit" name="cardType"
+                                    formControlName="cardType">
+                                <label for="credit"
+                                    style="margin: 10px; border-radius: 5px; padding:5px;">Credit</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="nameOnCard" style="margin: 10px; border-radius: 5px; padding:5px;">Name on
+                                    Card</label><br>
+                                <input type="text" formControlName="nameOnCard" class="form-control"
+                                    style="margin: 10px; border-radius: 5px; padding:5px;" />
+                            </div>
+                            <div class="form-group">
+                                <label for="cardNumber" style="margin: 10px; border-radius: 5px; padding:5px;">Card
+                                    Number</label><br>
+                                <input type="text" formControlName="cardNumber" class="form-control"
+                                    style="margin: 10px; border-radius: 5px; padding:5px;" />
+                            </div>
+                            <div class="form-group">
+                                <label for="cardExpiryMonth"
+                                    style="margin: 10px; border-radius: 5px; padding:5px;">Expiry Month</label>
+                                <label for="cardExpiryYear">Expiry Year</label>
+                                <select name="cardExpiryMonth" formControlName="cardExpiryMonth"
+                                    style="margin: 10px; border-radius: 5px; padding:5px;">
+                                    <option *ngFor="let month of monthArray" [value]="month">
+                                        {{ month }}</option>
+                                </select>
+                                <select name="cardExpiryYear" formControlName="cardExpiryYear"
+                                    style="margin: 10px; border-radius: 5px; padding:5px;">
+                                    <option *ngFor="let year of yearArray" [value]="year">
+                                        {{ year }}</option>
+                                </select>
+                                <div class="form-group">
+                                    <label for="cardCVV"
+                                        style="margin: 10px; border-radius: 5px; padding:5px;">CVV</label><br>
+                                    <input type="text" formControlName="cardCVV" class="form-control"
+                                        style="margin: 10px; border-radius: 5px; padding:5px;" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary pull-right" (click)="insertData()"><i
+                                        class="fa fa fa-shopping-cart"></i>
+                                    Buy Now</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <p class="font-bold">
+            </div>
+        </div>
+    </div>
+</div>

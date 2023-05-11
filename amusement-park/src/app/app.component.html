@@ -1,0 +1,125 @@
+<div class="page">
+    <div class="top-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <div class="social-grid">
+                        <ul class="list-unstyled text-right">
+                            <li *ngIf="!user && !admin"><a routerLink="/login">Login</a></li>
+                            <li *ngIf="!user && !admin"><a routerLink="/register">Register</a></li>
+                            <li *ngIf="user"><a>{{user.firstName}}</a></li>
+                            <li *ngIf="admin"><a>{{admin.firstName}}</a></li>
+                            <li *ngIf="user"><a (click)="logout()">Logout</a></li>
+                            <li *ngIf="admin"><a (click)="adminlogout()">Employee Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--header--->
+    <header *ngIf="showHead" class="header-container">
+        <div class="container">
+            <div class="top-row">
+                <div class="row">
+                    <div class="col-md-2 col-sm-6 col-xs-6">
+                        <div id="logo">
+                            <a routerLink="/home"><span>Voyage</span>of Amusements</a>
+                        </div>
+                    </div>
+                    <!-- <div class="col-sm-6 visible-sm">
+                        <div class="text-right"><button type="submit" class="book-now-btn" (click)='goToBooking()'>Book
+                                Now</button></div>
+                    </div> -->
+                    <div class="col-md-8 col-sm-12 col-xs-12 remove-padd">
+                        <nav class="navbar navbar-default">
+                            <div class="navbar-header page-scroll">
+                                <button data-target=".navbar-ex1-collapse" data-toggle="collapse" class="navbar-toggle"
+                                    type="button">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+
+                            </div>
+                            <div class="collapse navigation navbar-collapse navbar-ex1-collapse remove-space">
+                                <ul class="list-unstyled nav1 cl-effect-10">
+                                    <li><a data-hover="Home" routerLink="/home"><span>Home</span></a></li>
+                                    <li><a data-hover="Rides" routerLink="/rides"><span>Rides</span></a></li>
+                                    <li><a data-hover="Shows" routerLink="/shows"><span>Shows</span></a></li>
+                                    <li><a data-hover="Shopping" routerLink="/shopping"><span>Shopping</span></a></li>
+                                    <li><a data-hover="Dining" routerLink="/dining"><span>Dining</span></a></li>
+                                </ul>
+
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="col-md-2  col-sm-4 col-xs-12 hidden-sm">
+                        <div class="text-right"><button type="submit" class="book-now-btn" (click)='goToBooking()'>Book
+                                Now</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+<router-outlet></router-outlet>
+<footer *ngIf="showHead">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12 width-set-50">
+                <div class="footer-details">
+                    <h4>Get in touch</h4>
+                    <ul class="list-unstyled footer-contact-list">
+                        <li>
+                            <i class="fa fa-map-marker fa-lg"></i>
+                            <p>Address</p>
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-lg"></i>
+                            <p><a href="tel:+1-202-555-0100">Phone Number</a></p>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope-o fa-lg"></i>
+                            <p><a href="mailto:demo@info.com"> info@voa.com</a></p>
+                        </li>
+                    </ul>
+                    <div class="footer-social-icon">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                        <a href="#"><i class="fa fa-youtube-play"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12 width-50 width-set-50">
+                <div class="footer-details">
+                    <h4>explore</h4>
+                    <ul class="list-unstyled footer-links">
+                        <li><a routerLink="/home"><span>Home</span></a></li>
+                        <li><a routerLink="/rides"><span>Rides</span></a></li>
+                        <li><a routerLink="/shows"><span>Shows</span></a></li>
+                        <li><a routerLink="/shopping"><span>Shopping</span></a></li>
+                        <li><a routerLink="/dining"><span>Dining</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="footer-details">
+                    <h4>Now On Instagram</h4>
+                    <div class="row">
+                        <div class="instagram-images">
+                            <div id="instafeed"></div>
+                        </div>
+                        <a routerLink="/adminlogin">Employee Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</footer>

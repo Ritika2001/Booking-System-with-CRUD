@@ -1,0 +1,78 @@
+<div *ngIf="admin" class="container">
+    <div class="tab-slider--nav">
+        <ul class="tab-slider--tabs">
+            <li class="tab-slider--trigger" [class.active]="viewMode == 'tab1'" rel="tab1" (click)="viewMode ='tab1'">
+                Edit Shows</li>
+            <li class="tab-slider--trigger" [class.active]="viewMode == 'tab2'" rel="tab2" (click)="viewMode ='tab2'">
+                Edit Rides</li>
+            <li class="tab-slider--trigger" [class.active]="viewMode == 'tab3'" rel="tab3" (click)="viewMode ='tab3'">
+                Edit Stores</li>
+        </ul>
+    </div>
+    <div class="tab-slider--container" [ngSwitch]="viewMode">
+        <div id="tab1" class="tab-slider--body" *ngSwitchCase="'tab1'">
+            <form [formGroup]="formshowEdit">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Show Name</th>
+                        <th>Show Description</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Show Price</th>
+                        <th>WheelChair Accessible</th>
+                        <th>Show Type</th>
+                        <th></th>
+                    </tr>
+                    <tr *ngFor="let i of showsAdminDB">
+                        <td><button type="submit" (click)="removeShowAdmin(i['show_id'])"><img
+                                    src="../../../assets/images/icons/remove.png" style="height: 20px;" /></button></td>
+                        <td>{{ i['show_name'] }}</td>
+                        <td>{{ i['show_desc'] }}</td>
+                        <td>{{ i['start_time'] }}</td>
+                        <td>{{ i['end_time'] }}</td>
+                        <td>{{ i['wc_accessible'] }}</td>
+                        <td>{{ i['show_price'] }}</td>
+                        <td>{{ i['show_type_name'] }}</td>
+                        <td></td>
+                    </tr>
+
+
+                    <tr>
+                        <td></td>
+                        <td><input type="text" formControlName="show_name" class="form-control" /></td>
+                        <td><input type="text" formControlName="show_desc" class="form-control"
+                                style="margin: 10px; border-radius: 5px; padding:5px;" /></td>
+                        <td><input type="text" formControlName="start_time" class="form-control"
+                                style="margin: 10px; border-radius: 5px; padding:5px;" /></td>
+                        <td><input type="text" formControlName="end_time" class="form-control"
+                                style="margin: 10px; border-radius: 5px; padding:5px;" /></td>
+                        <td><select name="wc_accesible" formControlName="wc_accesible"
+                                style="margin: 10px; border-radius: 5px; padding:5px;">
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select></td>
+                        <td><input type="number" formControlName="show_price" class="form-control"
+                                style="margin: 10px; border-radius: 5px; padding:5px;" /></td>
+                        <td><select name="show_type_id" formControlName="show_type_id"
+                                style="margin: 10px; border-radius: 5px; padding:5px;">
+                                <option *ngFor="let showTypeDB of showsTypesDB" [value]="showTypeDB.show_type_id">
+                                    {{ showTypeDB.show_type_name }}
+                                </option>
+                            </select></td>
+                        <td><button (click)="insertShow()">
+                                Add Show</button></td>
+                    </tr>
+
+                </table>
+            </form>
+
+        </div>
+        <div id="tab2" class="tab-slider--body" *ngSwitchCase="'tab2'">
+
+        </div>
+        <div id="tab3" class="tab-slider--body" *ngSwitchCase="'tab3'">
+
+        </div>
+    </div>
+</div>

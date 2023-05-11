@@ -1,0 +1,42 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Compiled output
+/amusement-park/dist
+/amusement-park/tmp
+/amusement-park/out-tsc
+/amusement-park/bazel-out
+
+# Node
+/amusement-park/node_modules
+/amusement-park/npm-debug.log
+/amusement-park/yarn-error.log
+
+# IDEs and editors
+/amusement-park/.idea/
+/amusement-park/.project
+/amusement-park/.classpath
+/amusement-park/.c9/
+/amusement-park/*.launch
+/amusement-park/.settings/
+/amusement-park/*.sublime-workspace
+
+# Visual Studio Code
+/amusement-park/.vscode/*
+/amusement-park/!.vscode/settings.json
+/amusement-park/!.vscode/tasks.json
+/amusement-park/!.vscode/launch.json
+/amusement-park/!.vscode/extensions.json
+/amusement-park/.history/*
+
+# Miscellaneous
+/amusement-park/.angular/cache
+/amusement-park/.sass-cache/
+/amusement-park/connect.lock
+/amusement-park/coverage
+/amusement-park/libpeerconnection.log
+/amusement-park/testem.log
+/amusement-park//typings
+
+# System files
+/amusement-park/.DS_Store
+/amusement-park/Thumbs.db
