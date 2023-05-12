@@ -5,8 +5,6 @@
                 Edit Shows</li>
             <li class="tab-slider--trigger" [class.active]="viewMode == 'tab2'" rel="tab2" (click)="viewMode ='tab2'">
                 Edit Rides</li>
-            <li class="tab-slider--trigger" [class.active]="viewMode == 'tab3'" rel="tab3" (click)="viewMode ='tab3'">
-                Edit Stores</li>
         </ul>
     </div>
     <div class="tab-slider--container" [ngSwitch]="viewMode">
@@ -69,10 +67,67 @@
 
         </div>
         <div id="tab2" class="tab-slider--body" *ngSwitchCase="'tab2'">
+            <form [formGroup]="formRidesEdit">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Ride Name</th>
+                        <th>Ride Description</th>
+                        <th>Capacity</th>
+                        <th>Minimum Height</th>
+                        <th>Duration</th>
+                        <th>Attraction Location</th>
+                        <th>Attraction Type</th>
+                        <th>Attraction Status</th>
+                        <th></th>
+                    </tr>
+                    <tr *ngFor="let i of attractionAdminDB">
+                        <td><button type="submit" (click)="removeRideAdmin(i['attraction_id'])"><img
+                                    src="../../../assets/images/icons/remove.png" style="height: 20px;" /></button></td>
+                        <td>{{ i['attr_name'] }}</td>
+                        <td>{{ i['attr_desc'] }}</td>
+                        <td>{{ i['capacity'] }}</td>
+                        <td>{{ i['min_height'] }}</td>
+                        <td>{{ i['duration'] }}</td>
+                        <td>{{ i['attr_loc'] }}</td>
+                        <td>{{ i['attr_type'] }}</td>
+                        <td>{{ i['attr_status'] }}</td>
+                        <td></td>
+                    </tr>
+            
+            
+                    <tr>
+                        <td></td>
+                        <td><input type="text" formControlName="attr_name" class="form-control" style="border-radius: 5px;" /></td>
+                        <td><input type="text" formControlName="attr_desc" class="form-control"
+                                style="width: 300px; border-radius: 5px;" /></td>
+                        <td><input type="number" formControlName="capacity" class="form-control" style="border-radius: 5px;" /></td>
+                        <td><input type="number" formControlName="min_height" class="form-control" style="border-radius: 5px;" />
+                        </td>
+                        <td><input type="number" formControlName="duration" class="form-control" style="border-radius: 5px;" /></td>
+                        <td><select name="attr_loc_id" formControlName="attr_loc_id" style="border-radius: 5px; padding:5px;">
+                                <option *ngFor="let location of attractionLocationDB" [value]="location.attr_loc_id">
+                                    {{ location.attr_loc }}
+                                </option>
+                            </select></td>
+                        <td><select name="attr_type_id" formControlName="attr_type_id" style="border-radius: 5px; padding:5px;">
+                                <option *ngFor="let type of attractionTypeDB" [value]="type.attr_type_id">
+                                    {{ type.attr_type }}
+                                </option>
+                            </select></td>
+                        <td><select name="attr_status_id" formControlName="attr_status_id" style="border-radius: 5px; padding:5px;">
+                                <option *ngFor="let status of attractionStatusDB" [value]="status.attr_status_id">
+                                    {{ status.attr_status }}
+                                </option>
+                            </select></td>
+                        <td><button (click)="insertRides()" style="border-radius: 5px;">
+                                Add Show</button></td>
+                    </tr>
+            
+                </table>
+            </form>
 
         </div>
-        <div id="tab3" class="tab-slider--body" *ngSwitchCase="'tab3'">
 
-        </div>
     </div>
 </div>

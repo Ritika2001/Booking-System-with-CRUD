@@ -21,6 +21,8 @@ export class BookingComponent implements OnInit {
   formShow!: FormGroup;
   formStore!: FormGroup;
   formCard!: FormGroup;
+  group_id!: number;
+  payment!: number;
 
   basePrice = 200;
   parkingFixedPrice = 8;
@@ -90,7 +92,6 @@ export class BookingComponent implements OnInit {
   constructor(private accountService: AccountService, private http: HttpClient, private router: Router) {
 
     this.accountService.user.subscribe(x => this.user = x);
-    console.log(this.user);
 
     this.formVisitor = new FormGroup({
       fName: new FormControl(''),
@@ -131,7 +132,7 @@ export class BookingComponent implements OnInit {
           dob: new FormControl(''),
           member: new FormControl(''),
           price: new FormControl(''),
-          user_id: new FormControl(this.user.user_id)
+          user_id: new FormControl(this.user.user_id),
         })
       ])
     });
@@ -177,6 +178,9 @@ export class BookingComponent implements OnInit {
       cardExpiryMonth: new FormControl('', [Validators.required]),
       cardExpiryYear: new FormControl('', [Validators.required]),
       cardCVV: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(4)]),
+      user_id: new FormControl(this.user.user_id),
+      payment_method: new FormControl('Online'),
+      payment_amount: new FormControl('') 
     });
 
     this.formCard.disable();
@@ -187,16 +191,12 @@ export class BookingComponent implements OnInit {
     this.formCard.enable();
     this.formVisitor.disable();
     this.formParking.disable();
-    this.formShow.disable();
-    this.formStore.disable();
   }
 
   deactivateForm() {
     this.formCard.disable();
     this.formVisitor.enable();
     this.formParking.enable();
-    this.formShow.enable();
-    this.formStore.enable();
   }
 
 
@@ -222,7 +222,7 @@ export class BookingComponent implements OnInit {
     return this.formVisitor.get('visitor') as FormArray;
   }
 
-  onCompleteVisitor(i: number): void {
+  onCompleteVisitor(member: string, i: number): void {
     const dob = new Date(this.formVisitor.value['visitor'][i]['dob']).getTime();
     const timeDiff = Math.abs(Date.now() - dob);
     const age = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365);
@@ -230,7 +230,7 @@ export class BookingComponent implements OnInit {
     if (age <= 7 || age >= 60) {
       discount += this.seniorChildDiscount;
     }
-    if (this.formVisitor.value['visitor'][i]['member'] == "yes") {
+    if (this.formVisitor.value['visitor'][i]['member'] == "Y") {
       discount += this.memberDiscount;
     }
     const visitorPrice = this.basePrice * (1 - discount);
@@ -418,6 +418,7 @@ export class BookingComponent implements OnInit {
     this.formStore.value['stores'][i]['storePrice'] += unitPrice;
     this.totalPrice += unitPrice;
     this.rawPrice += unitPrice;
+    console.log(this.formStore.value);
   }
 
   decreaseStore(i: number): void {
@@ -446,15 +447,74 @@ export class BookingComponent implements OnInit {
 
   //INSERT
   insertData() {
-    this.http.post('http://127.0.0.1:5000/insert_multiple_visitors', this.formVisitor.value).subscribe(
+
+    const visit_date = (<HTMLInputElement>document.getElementById("visit_date")).value;
+    this.formVisitor.value['visit_date'] = visit_date;
+
+    this.formCard.value['payment_amount'] = this.totalPrice;
+    this.http.post('http://127.0.0.1:5000/insert_card_details', this.formCard.value).subscribe(
       response => {
         console.log(response);
-        // this.router.navigate(['/orderconfirmation']);
+        this.http.post('http://127.0.0.1:5000/insert_multiple_visitors', this.formVisitor.value).subscribe(
+          response => {
+            this.formParking.value['group_id'] = response;
+            this.formShow.value['group_id'] = response;
+            this.formStore.value['group_id'] = response;
+            this.formParking.value['visit_date'] = visit_date;
+            this.formShow.value['visit_date'] = visit_date;
+            this.formStore.value['visit_date'] = visit_date;
+            this.formParking.value['user_id'] = this.user.user_id;
+            this.formShow.value['user_id'] = this.user.user_id;
+            this.formStore.value['user_id'] = this.user.user_id;
+            this.http.post('http://127.0.0.1:5000/insert_parking', this.formParking.value).subscribe(
+              response => {
+                console.log(response);
+                this.http.post('http://127.0.0.1:5000/insert_shows', this.formShow.value).subscribe(
+                  response => {
+                    console.log(response);
+                    this.http.post('http://127.0.0.1:5000/insert_stores', this.formStore.value).subscribe(
+                      response => {
+                        console.log(response);
+                        this.router.navigate(['/orderconfirmation']);
+                      },
+                      error => {
+                        console.log(error);
+                      }
+                    );
+
+
+
+
+                    // this.router.navigate(['/orderconfirmation']);
+                  },
+                  error => {
+                    console.log(error);
+                  }
+                );
+
+
+                // this.router.navigate(['/orderconfirmation']);
+              },
+              error => {
+                console.log(error);
+              }
+            );
+
+
+            // this.router.navigate(['/orderconfirmation']);
+          },
+          error => {
+            console.log(error);
+          }
+        );
       },
       error => {
         console.log(error);
       }
     );
+
+
+
   }
 
 }

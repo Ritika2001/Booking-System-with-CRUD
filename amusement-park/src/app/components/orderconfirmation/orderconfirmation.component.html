@@ -1,82 +1,138 @@
 <div class="container mt-5 mb-5">
     <div class="row d-flex justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="invoice p-5">
-                    <h2>Hello {{ user.firstName }}! Your Order is Confirmed!</h2>
-                    <br>
-                    <div class="payment border-top mt-3 mb-3 border-bottom table-responsive">
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="py-2"> <span class="d-block text-muted">Order Date</span>
-                                            <span></span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="py-2"> <span class="d-block text-muted">Order No</span>
-                                            <span></span>
-                                        </div>
-                                    </td>
-
-                                </tr>
-                            </tbody>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="invoice p-5">
+                <h2>Hello {{ user.firstName }}! Your Order is Confirmed!</h2>
+                <br>
+                <div class="payment border-top mt-3 mb-3 border-bottom table-responsive">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <td>
+                            <div class="py-2"> <span class="d-block text-muted">Order Date: </span>
+                                <span>{{ date }}</span>
+                            </div>
+                            </td>
+                            <td>
+                            <div class="py-2"> <span class="d-block text-muted">Order No: </span>
+                                <span> {{orderDetails['group_id']}} </span>
+                            </div>
+                            </td>
+                        </tr>
+                        </tbody>
                         </table>
-                    </div>
-                    <div class="product border-bottom table-responsive">
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <th>Ticket ID</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                </tr>
-                                <tr>
-                                    <td width="20%"> <span class="font-weight-bold">1234567</span>
-                                    </td>
-                                    <td width="60%"> <span class="font-weight-bold">Shashank Shekhar</span>
-                                        <div class="product-qty"> <span class="d-block">Quantity: 1</span>
-                                        </div>
-                                    </td>
-                                    <td width="20%">
-                                        <div class="text-right"> <span class="font-weight-bold">$190.00</span> </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td width="20%"> <span class="font-weight-bold">1234567</span>
-
-                                    <td width="60%"> <span class="font-weight-bold">John Doe</span>
-                                        <div class="product-qty"> <span class="d-block">Quantity:1</span>
-                                        </div>
-                                    </td>
-                                    <td width="20%">
-                                        <div class="text-right"> <span class="font-weight-bold">$160.00</span> </div>
-                                    </td>
-                                </tr>
-                            </tbody>
+                        </div>
+                        <div class="product border-bottom table-responsive">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <th>Visit Date</th>
+                                        <th>Ticket ID</th>
+                                        <th>Name</th>
+                            <th class="text-right">Price</th>
+                            </tr>
+                        <tr *ngFor="let i of orderDetails['ticket']">
+                            <td>
+                                <span class="font-weight-bold"> {{ i['tkt_visit_date'] }} </span>
+                            </td>
+                            <td>
+                                <span class="font-weight-bold"> {{ i['tkt_id'] }} </span>
+                            </td>
+                            <td>
+                                <span class="font-weight-bold"> {{ i['firstName'] }} {{ i['lastName'] }} </span>
+                                <div class="product-qty">
+                                    <span class="d-block">Quantity: 1</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-right">
+                                    <span class="font-weight-bold"> ${{ i['tkt_final_price'] }} </span>
+                                </div>
+                            </td>
+                            </tr>
+                        </tbody>
                         </table>
-                    </div>
-                    <div class="product border-bottom table-responsive">
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <th>Parking In Time</th>
-                                    <th>Parking Out Time</th>
-                                    <th>Price</th>
-                                </tr>
-                                <tr>
-                                    <td width="20%"> <span class="font-weight-bold">12:30pm</span>
-                                    </td>
-                                    <td width="20%"> <span class="font-weight-bold">1:30 pm</span>
-                                    </td>
-                                    <td width="20%">
-                                        <div class="text-right"> <span class="font-weight-bold">$80.00</span> </div>
-                                    </td>
-                                </tr>
-
+                        </div>
+                        <div class="product border-bottom table-responsive">
+                            <table class="table table-borderless">
+                                <tbody>
+                        <tr>
+                            <th>Parking Date</th>
+                            <th>Parking In Time</th>
+                            <th>Parking Out Time</th>
+                            <th class="text-right">Price</th>
+                            </tr>
+                            <tr *ngFor="let i of orderDetails['parking']">
+                                <td>
+                                    <span class="font-weight-bold"> {{ i['parking_date'] }} </span>
+                                </td>
+                                <td> <span class="font-weight-bold"> {{ i['park_in_time'] }} </span>
+                                </td>
+                                <td><span class="font-weight-bold"> {{ i['park_out_time'] }} </span>
+                                </td>
+                                <td class="text-right"><span class="font-weight-bold"> ${{ i['parking_fee'] }} </span>
+                                </td>
+                            </tr>
                             </tbody>
-                        </table>
+                            </table>
+                            </div>
+                            <div class="product border-bottom table-responsive">
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <th>Show Date</th>
+                                            <th>Show</th>
+                                            <th>Start Time</th>
+                                            <th>End Time</th>
+                                            <th>Wheelchair Accessible</th>
+                                            <th class="text-right">Price</th>
+                                        </tr>
+                                        <tr *ngFor="let i of orderDetails['show']">
+                                            <td> <span class="font-weight-bold"> {{ i['show_date'] }} </span>
+                                            </td>
+                                            <td>
+                                                <span class="font-weight-bold"> {{ i['show_name'] }} </span>
+                                                <div class="product-qty">
+                                                    <span class="d-block">Quantity: {{ i['quantity'] }} </span>
+                                                </div>
+                                            </td>
+                            <td> <span class="font-weight-bold"> {{ i['start_time'] }} </span>
+                            </td>
+                            <td><span class="font-weight-bold"> {{ i['end_time'] }} </span>
+                            </td>
+                            <td><span class="font-weight-bold"> {{ i['wc_accessible'] }} </span>
+                            </td>
+                            <td class="text-right"><span class="font-weight-bold"> ${{ i['total_price'] }} </span>
+                            </td>
+                            </tr>
+                            </tbody>
+                            </table>
+                            </div>
+                            <div class="product border-bottom table-responsive">
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <th>Order Date</th>
+                                            <th>Store</th>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            </tr>
+                            <tr *ngFor="let i of orderDetails['store']">
+                                <td> <span class="font-weight-bold"> {{ i['order_date']}} </span>
+                                </td>
+                            <td> <span class="font-weight-bold"> {{i['store_name']}} </span>
+                            </td>
+                            <td>
+                                <span class="font-weight-bold"> {{i['menu_item_name']}} </span>
+                                <div class="product-qty"> <span class="d-block">Quantity: {{i['quantity']}} </span>
+                                </div>
+                            </td>
+                            <td> <span class="font-weight-bold"> {{ i['total_price']}} </span>
+                            </td>
+                            </tr>
+                    </tbody>
+                    </table>
                     </div>
                     <div class="row d-flex justify-content-end">
                         <div class="col-md-5">
@@ -87,34 +143,33 @@
                                             <div class="text-left"> <span class="text-muted">Subtotal</span> </div>
                                         </td>
                                         <td>
-                                            <div class="text-right"> <span>$168.50</span> </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="text-left"> <span class="text-muted">Discount</span> </div>
-                                        </td>
-                                        <td>
-                                            <div class="text-right"> <span class="text-success">$168.50</span> </div>
-                                        </td>
-                                    </tr>
-                                    <tr class="border-top border-bottom">
-                                        <td>
-                                            <div class="text-left"> <span class="font-weight-bold">Subtotal</span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="text-right"> <span class="font-weight-bold">$238.50</span>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                <div class="text-right"> <span>${{ orderDetails['subtotal'] }}</span> </div>
+                                </td>
+                                </tr>
+                            <tr>
+                                <td>
+                                    <div class="text-left"> <span class="text-muted">Discount</span> </div>
+                                </td>
+                                <td>
+                                <div class="text-right"> <span class="text-success">- ${{orderDetails['discount']}}</span> </div>
+                                </td>
+                                </tr>
+                                <tr class="border-top border-bottom">
+                                    <td>
+                                <div class="text-left"> <span class="font-weight-bold">Total</span>
+                                </div>
+                                </td>
+                                <td>
+                                <div class="text-right"> <span class="font-weight-bold">$ {{orderDetails['total']}} </span>
+                                </div>
+                                </td>
+                                </tr>
                                 </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                </div>
+                                </table>
+                                </div>
+                                </div>
             </div>
-        </div>
-    </div>
+            </div>
+            </div>
+            </div>
+            </div>

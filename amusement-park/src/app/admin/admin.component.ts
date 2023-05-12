@@ -12,8 +12,15 @@ import { AccountService } from '../_services';
 export class AdminComponent {
   viewMode = 'tab1';
   formshowEdit!: FormGroup;
+  formRidesEdit!: FormGroup;
   showsTypesDB: any[] = [];
   showsAdminDB: any[] = [];
+
+  attractionLocationDB: any[] = [];
+  attractionTypeDB: any[] = [];
+  attractionStatusDB: any[] = [];
+  attractionAdminDB: any[] = [];
+
   admin: Admin = new Admin;
 
 
@@ -31,6 +38,17 @@ export class AdminComponent {
       show_type_id: new FormControl('')
     });
 
+    this.formRidesEdit = new FormGroup({
+      attr_name: new FormControl(''),
+      attr_desc: new FormControl(''),
+      capacity: new FormControl(''),
+      min_height: new FormControl(''),
+      duration: new FormControl(''),
+      attr_loc_id: new FormControl(''),
+      attr_type_id: new FormControl(''),
+      attr_status_id: new FormControl('')
+    });
+
     this.http.get<any>('http://127.0.0.1:5000/getShowTypes').subscribe(
       response => {
         this.showsTypesDB = response;
@@ -40,9 +58,46 @@ export class AdminComponent {
       }
     );
 
+    this.http.get<any>('http://127.0.0.1:5000/getAttractionLocations').subscribe(
+      response => {
+        this.attractionLocationDB = response;
+      },
+      error => {
+        console.log(error);
+      }
+    );
+
+    this.http.get<any>('http://127.0.0.1:5000/getAttractionType').subscribe(
+      response => {
+        this.attractionTypeDB = response;
+      },
+      error => {
+        console.log(error);
+      }
+    );
+
+    this.http.get<any>('http://127.0.0.1:5000/getAttractionStatus').subscribe(
+      response => {
+        this.attractionStatusDB = response;
+      },
+      error => {
+        console.log(error);
+      }
+    );
+
     this.http.get<any>('http://127.0.0.1:5000/getShowsAdmin').subscribe(
       response => {
         this.showsAdminDB = response;
+      },
+      error => {
+        console.log(error);
+      }
+    );
+
+
+    this.http.get<any>('http://127.0.0.1:5000/getRidesAdmin').subscribe(
+      response => {
+        this.attractionAdminDB = response;
       },
       error => {
         console.log(error);
@@ -59,8 +114,32 @@ export class AdminComponent {
         console.log(error);
       }
     );
-
   }
+
+  insertRides() {
+    this.http.post('http://127.0.0.1:5000/insert_attractions', this.formRidesEdit.value).subscribe(
+      response => {
+        console.log(response);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  removeRideAdmin(i: number) {
+    this.http.get<any>('http://127.0.0.1:5000/deleteRide?id=' + i).subscribe(
+      response => {
+        console.log(response);
+        window.location.reload();
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+
   removeShowAdmin(i: number) {
     this.http.get<any>('http://127.0.0.1:5000/deleteShow?id=' + i).subscribe(
       response => {

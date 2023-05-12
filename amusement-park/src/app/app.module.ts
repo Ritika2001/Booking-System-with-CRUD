@@ -18,6 +18,7 @@ import { BookingComponent } from './components/booking/booking.component';
 import { OrderconfirmationComponent } from './components/orderconfirmation/orderconfirmation.component';
 import { AdminComponent } from './admin/admin.component';
 import { AdminLoginComponent } from './admin/adminlogin.component';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { AdminLoginComponent } from './admin/adminlogin.component';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    DatePipe
 
     // provider used to create fake backend
     // fakeBackendProvider

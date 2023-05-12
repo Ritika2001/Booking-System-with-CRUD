@@ -10,7 +10,7 @@
                     <div class="ibox-content">
                         <div class="table-responsive">
                             <h3>Date of Visit:</h3>
-                            <input type="date" style="margin-top: 10px; border-radius: 5px; padding:5px;" />
+                            <input id="visit_date" type="date" style="margin-top: 10px; border-radius: 5px; padding:5px;" />
                         </div>
                     </div>
                     <div class="ibox-content">
@@ -36,7 +36,7 @@
 
                                                         <label for="member">Member:</label>
                                                         <select name="member" formControlName="member"
-                                                            (change)="onCompleteVisitor(i)"
+                                                            (change)="onCompleteVisitor($any($event.target).value, i)"
                                                             style="margin: 10px; border-radius: 5px; padding:5px;">
                                                             <option value="Y">Yes</option>
                                                             <option value="N">No</option>
@@ -315,10 +315,9 @@
                         <hr>
                         <div class="m-t-sm">
                             <div class="btn-group">
-                                <a class="btn btn-primary btn-sm" (click)="activateForm()"><i
+                                <a (click)="activateForm()"><i
                                         class="fa fa-shopping-cart"></i>
                                     Checkout</a>
-                                <a class="btn btn-white btn-sm" (click)="deactivateForm()"> Cancel</a>
                             </div>
                         </div>
                     </div>
