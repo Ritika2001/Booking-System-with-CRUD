@@ -1,4 +1,4 @@
-# DBMS_Final_Project
+# Booking System with CRUD
 
 ## Requirements
 nvm: 1.1.11
